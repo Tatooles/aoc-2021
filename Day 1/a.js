@@ -7,12 +7,12 @@ const data = await fsPromises.readFile(filename, 'utf-8');
 
 const arr = data.split(/\r?\n/);
 
-let currentElfCalories = 0; // Amount of calorues for the current elf
+let currentElfCalories = 0; // Amount of calories for the current elf
 
 let maxElfCalories = -1;
 
 for (let i = 0; i < arr.length; i++) {
-  // Nested for loop that separates between 
+  // Nested for loop that separates between elves
   if (arr[i] == '') {
     if (currentElfCalories > maxElfCalories) {
       maxElfCalories = currentElfCalories;
