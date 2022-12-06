@@ -11,7 +11,7 @@ let stacks = [];
 
 // Find bottom of the initial state
 for (let i = 0; i < arr.length; i++) {
-  if (arr[i].charAt(1) === '1') { // Found row we are looking for
+  if (arr[i].charAt(1) === '1') { // Found row we are looking for, this could definitely be optimized
     bottomIndex = i - 1;
     stackCount = arr[i].charAt(arr[i].length - 2);
     break;
@@ -27,7 +27,7 @@ for (let i = 0; i < stackCount; i++) {
 for (let i = bottomIndex; i >= 0; i--) {
   // Gonna have to use charAt
   for (let j = 0; j < stackCount; j++) {
-    let crate = arr[i].charAt(j * 4 + 1);
+    const crate = arr[i].charAt(j * 4 + 1);
     if (crate !== ' ') { // Push to queue
       stacks[j].push(crate);
     }
@@ -36,23 +36,20 @@ for (let i = bottomIndex; i >= 0; i--) {
 
 
 // Go through the rest of the input
-let commands = arr.slice(bottomIndex + 3);
+const commands = arr.slice(bottomIndex + 3);
 commands.forEach(command => {
-  let split = command.split(' ');
+  const split = command.split(' ');
   // Only care about indicies 1, 3, and 5
-  let count = parseInt(split[1]);
-  let from = parseInt(split[3]) - 1;
-  let to = parseInt(split[5]) - 1;
+  const count = parseInt(split[1]);
+  const from = parseInt(split[3]) - 1;
+  const to = parseInt(split[5]) - 1;
 
   // Execute the actual crate moving
   // This part is different in part 2
   // Need to use array slice rather than pop
 
   // Slice off the end of the from array
-  let crates = stacks[from].slice(-count);
-
-  // Gotta modify the from array
-  stacks[from] = stacks[from].slice(0, -count);
+  const crates = stacks[from].splice(-count, count);
 
   // Add to the to array
   stacks[to] = stacks[to].concat(crates);
@@ -60,7 +57,7 @@ commands.forEach(command => {
 
 // Create answer string from final crate config
 let answer = '';
-for (let stack of stacks) {
+for (const stack of stacks) {
   answer = answer.concat(stack.pop());
 }
 
