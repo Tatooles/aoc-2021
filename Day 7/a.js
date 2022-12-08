@@ -5,37 +5,39 @@ const filename = 'input.txt';
 const data = await fsPromises.readFile(filename, 'utf-8');
 const arr = data.split(/\n/);
 
-// console.log(arr);
-
+// Handle logic if the input line is a command
 const executeCommand = (tokens) => {
-  // Execute command
-  if (tokens[1] === 'cd') {
-    // Change directory (move curr)
-    if (tokens[2] === '/') {
-      curr = root;
-    }
-    if (tokens[2] === '..') {
-      if (curr.parent === null) {
-        console.log('ERROR: null parent');
-      } else {
-        // Go up a level
-        curr = curr.parent;
-      }
-    } else {
-      // Move into directory, find which child to switch into
-      for (const child of curr.children) {
-        if (child.name === tokens[2]) {
-          curr = child;
-          return;
-        }
+  // Change directory (move curr)
+  if (tokens[2] === '/') {
+    curr = root;
+    return;
+  }
+  if (tokens[2] === '..') {
+    // Go up a level
+    curr = curr.parent;
+    return;
+  } else if (tokens[1] === 'cd') {
+    // Move into directory, find which child to switch into
+    for (const child of curr.children) {
+      if (child.name === tokens[2]) {
+        curr = child;
+        return;
       }
     }
   }
-  else if (tokens[1] === 'ls') {
-    // I think we can just ignore ls, could maybe set a flag for read mode but that can be implied
+}
+
+// Do a full tree traversal to figure out this answer
+const traverseTree = (root) => {
+  if (root.size <= 100000) {
+    answer += root.size;
   }
-  else {
-    console.log('ERROR: invalid command:', line)
+
+  if (root.children.length === 0) {
+    return;
+  }
+  for (const child of root.children) {
+    traverseTree(child);
   }
 }
 
@@ -68,22 +70,6 @@ for (const line of arr) {
 }
 
 let answer = 0;
-
-// Do a full tree traversal to figure out this answer
-const traverseTree = (root) => {
-  if (root.size <= 100000) {
-    answer += root.size;
-  }
-  // Base case
-  // no children
-  if (root.children.length === 0) {
-    return;
-  } else {
-    for (const child of root.children) {
-      traverseTree(child);
-    }
-  }
-}
 
 traverseTree(root);
 
