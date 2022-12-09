@@ -12,9 +12,8 @@ const width = arr[0].length
 // Count outer edge
 visible += 2 * inputHeight + 2 * width - 4;
 
+// Check all 4 directions
 const checkTree = (y, x) => {
-  // console.log('checking', x, y, arr[y][x]);
-  // Check all 4 directions
   let height = arr[y][x];
   let visibleLeft = true;
   let visibleRight = true;
@@ -23,45 +22,25 @@ const checkTree = (y, x) => {
 
   // Check left
   for (let i = 0; i < x; i++) {
-    // Assume visible left
-    if (arr[y][i] >= height) {
-      // console.log('not visible left');
-      visibleLeft = false;
-    }
+    if (arr[y][i] >= height) visibleLeft = false;
   }
 
   // Check right
   for (let i = x + 1; i < width; i++) {
-    if (arr[y][i] >= height) {
-      // console.log('not visible right');
-      visibleRight = false;
-    }
+    if (arr[y][i] >= height) visibleRight = false;
   }
 
   // Check top
   for (let i = 0; i < y; i++) {
-    if (arr[i][x] >= height) {
-      // console.log('not visible top');
-      visibleTop = false;
-    }
+    if (arr[i][x] >= height) visibleTop = false;
   }
 
   // Check bottom
   for (let i = y + 1; i < inputHeight; i++) {
-    if (arr[i][x] >= height) {
-      // console.log('not visible bottom');
-      visibleBottom = false;
-    }
+    if (arr[i][x] >= height) visibleBottom = false;
   }
 
-  // console.log(x, y);
-
-  // console.log(visibleLeft, visibleRight, visibleTop, visibleBottom);
-
-  if (visibleLeft || visibleRight || visibleTop || visibleBottom) {
-    visible++;
-    // console.log(y, x, 'is visible');
-  }
+  if (visibleLeft || visibleRight || visibleTop || visibleBottom) visible++;
 }
 
 // Can ignore the outer edge

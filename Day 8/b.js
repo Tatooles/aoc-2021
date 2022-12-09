@@ -6,60 +6,44 @@ const data = await fsPromises.readFile(filename, 'utf-8');
 const arr = data.split(/\n/);
 
 const inputHeight = arr.length;
-const width = arr[0].length
+const width = arr[0].length;
 
 let maxScore = -1;
 
+// Check all 4 directions
 const checkTree = (y, x) => {
-  // console.log('checking', x, y, arr[y][x]);
-  // Check all 4 directions
   let height = arr[y][x];
   let leftScore = 0;
   let rightScore = 0;
   let topScore = 0;
   let bottomScore = 0;
 
-  // Check left
+  // Check left, but start from our tree and move out
   for (let i = x - 1; i >= 0; i--) {
     leftScore++;
-    if (arr[y][i] >= height) {
-      // console.log('not visible left');
-      break;
-    }
+    if (arr[y][i] >= height) break;
   }
 
   // Check right
   for (let i = x + 1; i < width; i++) {
     rightScore++;
-    if (arr[y][i] >= height) {
-      // console.log('not visible right');
-      break;
-    }
+    if (arr[y][i] >= height) break;
   }
 
-  // Check top
+  // Check top, but start from our tree and move out
   for (let i = y - 1; i >= 0; i--) {
     topScore++;
-    if (arr[i][x] >= height) {
-      // console.log('not visible top');
-      break;
-    }
+    if (arr[i][x] >= height) break;
   }
 
   // Check bottom
   for (let i = y + 1; i < inputHeight; i++) {
     bottomScore++;
-    if (arr[i][x] >= height) {
-      // console.log('not visible bottom');
-      break;
-    }
+    if (arr[i][x] >= height) break;
   }
-
-  // console.log(x, y);
 
   let score = leftScore * rightScore * topScore * bottomScore;
   if (score > maxScore) maxScore = score;
-  // console.log('tree', y, x, 'score', score);
 }
 
 
