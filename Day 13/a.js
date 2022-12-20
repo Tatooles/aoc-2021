@@ -9,23 +9,27 @@ const arr = data.split(/\n/);
 const parsePacket = (inputString) => {
   // Case: [0, [0, [0, [0, 1], [1, 2]]]]
   const packet = [];
-  let parentArray;
+  const parentArray = [];
   // TODO: Store all the parent arrays, probably in another array where we pop off the end
   let currentArray = packet;
 
   for (const c of inputString) {
     if (c === ',') continue; // Ignore commas
     else if (c === '[') {
-      // We need to start a new array
-      parentArray = currentArray;
+      // Store current in parent array
+      parentArray.push(currentArray);
+
+      // Start a new array
       currentArray = [];
-      // TODO: Store in parent array
     }
     else if (c === ']') {
       // End the array
-      parentArray.push(currentArray);
-      currentArray = parentArray; // How do we set parentArray
-      // TODO: Set new parent array from end of parent array
+      // Set new parent array from end of parent array
+      let parent = parentArray.pop();
+
+      // Push to the parent array
+      parent.push(currentArray);
+      currentArray = parent;
     } else {
       // Add to array
       currentArray.push(c);
