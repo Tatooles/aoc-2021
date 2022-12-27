@@ -24,10 +24,8 @@ const dropGrain = () => {
   let x = 500;
   let y = 0;
 
-  // TODO: It's piling up on the edge, should just fall off!!
-
   // Drop straight down
-  while (y < maxY) {
+  while (y < maxY && x < maxX) {
     if (grid[y + 1][x] === '.') {
       // Can go down
       y++;
@@ -60,7 +58,7 @@ points.forEach(line => {
   })
 });
 
-// Create grid
+// Init grid
 const grid = Array(maxY + 1).fill('.').map(() => Array(maxX + 1).fill('.'));
 
 // Now add lines to the grid
@@ -95,10 +93,8 @@ points.forEach(path => {
 
     for (let i = small; i <= big; i++) {
       if (horizontal) {
-        // console.log('placing #', y1, i);
         grid[y1][i] = '#';
       } else {
-        // console.log('placing #', i, x1);
         grid[i][x1] = '#';
       }
     }
@@ -107,22 +103,11 @@ points.forEach(path => {
 
 // Place start point
 grid[0][500] = '+';
-
 let count = 0;
 
-console.log(maxX, maxY);
-
 while (dropGrain()) {
-  // printGrid();
   count++;
 }
 
-printGrid();
-console.log(maxX, maxY, grid[0].length, grid.length);
-
-// for (let i = 0; i < 40; i++) {
-//   dropGrain();
-//   printGrid();
-// }
-
+// printGrid();
 console.log('answer', count);
