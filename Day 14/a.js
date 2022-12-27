@@ -10,11 +10,40 @@ const arr = data.split(/\n/);
  */
 const printGrid = () => {
   // This is where we want to start from on the X axis
-  const startX = 495;
+  const startX = 470;
 
   for (let i = 0; i < grid.length; i++) {
     console.log(grid[i].slice(startX).join(' '));
   }
+  console.log();
+}
+
+const dropGrain = () => {
+  // Run this grain until it reaches rest
+  // Start at starting point
+  let x = 500;
+  let y = 0;
+
+  // TODO: It's piling up on the edge, should just fall off!!
+
+  // Drop straight down
+  while (y < maxY) {
+    if (grid[y + 1][x] === '.') {
+      // Can go down
+      y++;
+    } else if (grid[y + 1][x - 1] === '.') {
+      y++;
+      x--;
+    } else if (grid[y + 1][x + 1] === '.') {
+      y++;
+      x++;
+    }
+    else {
+      grid[y][x] = 'o';
+      return true;
+    }
+  }
+  return false;
 }
 
 const points = arr
@@ -79,4 +108,21 @@ points.forEach(path => {
 // Place start point
 grid[0][500] = '+';
 
+let count = 0;
+
+console.log(maxX, maxY);
+
+while (dropGrain()) {
+  // printGrid();
+  count++;
+}
+
 printGrid();
+console.log(maxX, maxY, grid[0].length, grid.length);
+
+// for (let i = 0; i < 40; i++) {
+//   dropGrain();
+//   printGrid();
+// }
+
+console.log('answer', count);
