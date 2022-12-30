@@ -20,7 +20,41 @@ const printGrid = () => {
  * @param {String} direction 
  */
 const makeMove = (direction) => {
+  // One way is to calculate distance, if it's more than sqrt2 then we need to move the tail
+  // But still have to determine if it's a vertical or horizontal move
 
+  // In each case want to determinie if it's a straight or diagonal move
+  if (direction === 'R') {
+    console.log('move right');
+    grid[h[0]][h[1]] = '.';
+    h[1]++;
+    grid[h[0]][h[1]] = 'H';
+
+  } else if (direction === 'L') {
+    console.log('move left');
+    grid[h[0]][h[1]] = '.';
+    h[1]--;
+    grid[h[0]][h[1]] = 'H';
+
+  } else if (direction === 'U') {
+    console.log('move up');
+    grid[h[0]][h[1]] = '.';
+    h[0]--;
+    grid[h[0]][h[1]] = 'H';
+
+  } else if (direction === 'D') {
+    console.log('move down');
+    grid[h[0]][h[1]] = '.';
+    h[0]++;
+    grid[h[0]][h[1]] = 'H';
+
+  } else {
+    console.error('ERROR');
+  }
+  // Set start position
+  if (h != s) {
+    grid[s[0]][s[1]] = 's';
+  }
 }
 
 // Simply figure out what the max x and y are
