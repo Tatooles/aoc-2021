@@ -20,8 +20,7 @@ const printGrid = () => {
  * @param {String} direction 
  */
 const makeMove = (direction) => {
-  // One way is to calculate distance, if it's more than sqrt2 then we need to move the tail
-  // But still have to determine if it's a vertical or horizontal move
+  // TODO: Simply move the tail to where the head was....
 
   // In each case want to determinie if it's a straight or diagonal move
   if (direction === 'R') {
@@ -30,24 +29,64 @@ const makeMove = (direction) => {
     h[1]++;
     grid[h[0]][h[1]] = 'H';
 
+    if (h[0] != t[0]) {
+      // Diagonal move
+    } else {
+      // Just move it straight right?
+      if (h[1] - 1 > t[1]) {
+        grid[t[0]][t[1]] = '.';
+        t[1]++;
+        grid[t[0]][t[1]] = 'T';
+      }
+    }
   } else if (direction === 'L') {
     console.log('move left');
     grid[h[0]][h[1]] = '.';
     h[1]--;
     grid[h[0]][h[1]] = 'H';
 
+    if (h[0] != t[0]) {
+      // Diagonal move
+    } else {
+      // Just move it straight right?
+      if (h[1] + 1 < t[1]) {
+        grid[t[0]][t[1]] = '.';
+        t[1]--;
+        grid[t[0]][t[1]] = 'T';
+      }
+    }
   } else if (direction === 'U') {
     console.log('move up');
     grid[h[0]][h[1]] = '.';
     h[0]--;
     grid[h[0]][h[1]] = 'H';
 
+    if (h[1] != t[1]) {
+      // Diagonal move
+    } else {
+      // Just move it straight up
+      if (h[0] + 1 < t[0]) {
+        grid[t[0]][t[1]] = '.';
+        t[0]--;
+        grid[t[0]][t[1]] = 'T';
+      }
+    }
   } else if (direction === 'D') {
     console.log('move down');
     grid[h[0]][h[1]] = '.';
     h[0]++;
     grid[h[0]][h[1]] = 'H';
 
+    if (h[1] != t[1]) {
+      // Diagonal move
+    } else {
+      // Just move it straight up
+      if (h[0] - 1 > t[0]) {
+        grid[t[0]][t[1]] = '.';
+        t[0]++;
+        grid[t[0]][t[1]] = 'T';
+      }
+    }
   } else {
     console.error('ERROR');
   }
