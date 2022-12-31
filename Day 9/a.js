@@ -24,42 +24,28 @@ const makeMove = (direction) => {
   let [prevY, prevX] = h;
 
   // In each case want to determine if it's a straight or diagonal move
-  if (direction === 'R') {
-    console.log('move right');
-    h[1]++;
-  } else if (direction === 'L') {
-    console.log('move left');
-    h[1]--;
-  } else if (direction === 'U') {
-    console.log('move up');
-    h[0]--;
-  } else if (direction === 'D') {
-    console.log('move down');
-    h[0]++;
-  } else {
-    console.error('ERROR');
-  }
+  if (direction === 'R') h[1]++;
+  else if (direction === 'L') h[1]--;
+  else if (direction === 'U') h[0]--;
+  else if (direction === 'D') h[0]++;
+  else console.error('ERROR');
 
   let distance = Math.sqrt((h[0] - t[0]) ** 2 + (h[1] - t[1]) ** 2);
 
-  // Need the distance after moving
+  // Determine if we need to move the tail
   if (distance > 1.5) {
-    // Need to move tail, straight line movement
-    grid[prevY][prevX] = 'T';
     grid[t[0]][t[1]] = '.';
     t[0] = prevY;
     t[1] = prevX;
   } else {
-    // Tail doesn't move, nothing in head's previous spot
+    // Tail doesn't move, so nothing in head's previous spot
     grid[prevY][prevX] = '.';
   }
 
+  grid[t[0]][t[1]] = 'T';
+  // TODO: Mark this t square in the visited array
   grid[h[0]][h[1]] = 'H';
-  // Case where head was covering tail
-  if (t[0] === prevY && t[1] === prevX) {
-    console.log('hit');
-    grid[prevY][prevX] = 'T';
-  }
+
   // Set start position
   if (t != s && h != s) {
     grid[s[0]][s[1]] = 's';
@@ -93,6 +79,8 @@ arr.forEach(element => {
 
 // Init array
 const grid = Array(upMax + downMax + 1).fill('.').map(() => Array(leftMax + rightMax + 1).fill('.'));
+
+// TODO: Probably make another array to store which indicies have been visited
 
 // Init each piece
 const s = [upMax, leftMax];
