@@ -20,78 +20,48 @@ const printGrid = () => {
  * @param {String} direction 
  */
 const makeMove = (direction) => {
-  // TODO: Simply move the tail to where the head was....
+  // Move the tail to where the head was, only if it's more than 1 away
+  let [prevY, prevX] = h;
 
-  // In each case want to determinie if it's a straight or diagonal move
+  // In each case want to determine if it's a straight or diagonal move
   if (direction === 'R') {
     console.log('move right');
-    grid[h[0]][h[1]] = '.';
     h[1]++;
-    grid[h[0]][h[1]] = 'H';
-
-    if (h[0] != t[0]) {
-      // Diagonal move
-    } else {
-      // Just move it straight right?
-      if (h[1] - 1 > t[1]) {
-        grid[t[0]][t[1]] = '.';
-        t[1]++;
-        grid[t[0]][t[1]] = 'T';
-      }
-    }
   } else if (direction === 'L') {
     console.log('move left');
-    grid[h[0]][h[1]] = '.';
     h[1]--;
-    grid[h[0]][h[1]] = 'H';
-
-    if (h[0] != t[0]) {
-      // Diagonal move
-    } else {
-      // Just move it straight right?
-      if (h[1] + 1 < t[1]) {
-        grid[t[0]][t[1]] = '.';
-        t[1]--;
-        grid[t[0]][t[1]] = 'T';
-      }
-    }
   } else if (direction === 'U') {
     console.log('move up');
-    grid[h[0]][h[1]] = '.';
     h[0]--;
-    grid[h[0]][h[1]] = 'H';
-
-    if (h[1] != t[1]) {
-      // Diagonal move
-    } else {
-      // Just move it straight up
-      if (h[0] + 1 < t[0]) {
-        grid[t[0]][t[1]] = '.';
-        t[0]--;
-        grid[t[0]][t[1]] = 'T';
-      }
-    }
   } else if (direction === 'D') {
     console.log('move down');
-    grid[h[0]][h[1]] = '.';
     h[0]++;
-    grid[h[0]][h[1]] = 'H';
-
-    if (h[1] != t[1]) {
-      // Diagonal move
-    } else {
-      // Just move it straight up
-      if (h[0] - 1 > t[0]) {
-        grid[t[0]][t[1]] = '.';
-        t[0]++;
-        grid[t[0]][t[1]] = 'T';
-      }
-    }
   } else {
     console.error('ERROR');
   }
+
+  let distance = Math.sqrt((h[0] - t[0]) ** 2 + (h[1] - t[1]) ** 2);
+
+  // Need the distance after moving
+  if (distance > 1.5) {
+    // Need to move tail, straight line movement
+    grid[prevY][prevX] = 'T';
+    grid[t[0]][t[1]] = '.';
+    t[0] = prevY;
+    t[1] = prevX;
+  } else {
+    // Tail doesn't move, nothing in head's previous spot
+    grid[prevY][prevX] = '.';
+  }
+
+  grid[h[0]][h[1]] = 'H';
+  // Case where head was covering tail
+  if (t[0] === prevY && t[1] === prevX) {
+    console.log('hit');
+    grid[prevY][prevX] = 'T';
+  }
   // Set start position
-  if (h != s) {
+  if (t != s && h != s) {
     grid[s[0]][s[1]] = 's';
   }
 }
@@ -120,8 +90,6 @@ arr.forEach(element => {
       rightMax += distance;
   }
 });
-
-console.log(leftMax, rightMax, upMax, downMax);
 
 // Init array
 const grid = Array(upMax + downMax + 1).fill('.').map(() => Array(leftMax + rightMax + 1).fill('.'));
