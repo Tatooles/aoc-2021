@@ -1,16 +1,16 @@
 import { promises as fsPromises } from 'fs';
 
 // Read text file, separating by line
-const filename = 'test.txt';
+const filename = 'input.txt';
 const data = await fsPromises.readFile(filename, 'utf-8');
 const arr = data.split(/\n/).map(line => line.split(' '));
 
 /**
  * Print the grid in a user friendly format
  */
-const printGrid = () => {
-  for (let i = 0; i < grid.length; i++) {
-    console.log(grid[i].join(' '));
+const printArray = (array) => {
+  for (let i = 0; i < array.length; i++) {
+    console.log(array[i].join(' '));
   }
   console.log();
 }
@@ -43,7 +43,12 @@ const makeMove = (direction) => {
   }
 
   grid[t[0]][t[1]] = 'T';
-  // TODO: Mark this t square in the visited array
+
+  // Mark this tail in the visited array
+  if (!visited[t[0]][t[1]]) {
+    visited[t[0]][t[1]] = 1;
+    visitedCount++;
+  }
   grid[h[0]][h[1]] = 'H';
 
   // Set start position
@@ -77,10 +82,10 @@ arr.forEach(element => {
   }
 });
 
-// Init array
+// Init arrays
 const grid = Array(upMax + downMax + 1).fill('.').map(() => Array(leftMax + rightMax + 1).fill('.'));
+const visited = Array(upMax + downMax + 1).fill(0).map(() => Array(leftMax + rightMax + 1).fill(0));
 
-// TODO: Probably make another array to store which indicies have been visited
 
 // Init each piece
 const s = [upMax, leftMax];
@@ -88,11 +93,17 @@ const h = [upMax, leftMax];
 const t = [upMax, leftMax];
 grid[s[0]][s[1]] = 'H';
 
+visited[s[0]][s[1]] = 1;
+let visitedCount = 1;
+
 // Now go through the movements
 // Will probably have to do it one at a time
 arr.forEach(element => {
   for (let i = 0; i < element[1]; i++) {
     makeMove(element[0]);
-    printGrid();
+    // printArray(grid);
   }
 });
+
+// printArray(visited);
+console.log('answer', visitedCount);
